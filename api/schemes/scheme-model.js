@@ -1,3 +1,5 @@
+const db =require("../../data/db-config")
+
 function find() { // Egzersiz A
   /*
     1A- Aşağıdaki SQL sorgusunu SQLite Studio'da "data/schemes.db3" ile karşılaştırarak inceleyin.
@@ -15,6 +17,12 @@ function find() { // Egzersiz A
     2A- Sorguyu kavradığınızda devam edin ve onu Knex'te oluşturun.
     Bu işlevden elde edilen veri kümesini döndürün.
   */
+    return db("schemes as sc")
+          .leftJoin("steps as st",'sc.scheme_id','st.scheme_id')
+          .select("sc.*")
+          .count("st.step_id as number_of_steps")
+          .groupBy("sc.scheme_id")
+          .orderBy("sc.scheme_id","asc");
 }
 
 function findById(scheme_id) { // Egzersiz B
@@ -83,6 +91,7 @@ function findById(scheme_id) { // Egzersiz B
         "steps": []
       }
   */
+
 }
 
 function findSteps(scheme_id) { // Egzersiz C
@@ -112,6 +121,7 @@ function add(scheme) { // Egzersiz D
   /*
     1D- Bu işlev yeni bir şema oluşturur ve _yeni oluşturulan şemaya çözümlenir.
   */
+ 
 }
 
 function addStep(scheme_id, step) { // EXERCISE E

@@ -1,3 +1,7 @@
+const db = require("../../data/db-config");
+const scModel = require("../schemes/scheme-model");
+
+
 /*
   Eğer `scheme_id` veritabanında yoksa:
 
@@ -6,8 +10,19 @@
     "message": "scheme_id <gerçek id> id li şema bulunamadı"
   }
 */
-const checkSchemeId = (req, res, next) => {
-
+const checkSchemeId = async (req, res, next) => {
+  try {
+   
+    const existRecort = await db("schemes").where("scheme_id",req.params.scheme_id).first();
+    if(!existRecort){
+      res.status(404).json({message:`scheme_id ${req.params.scheme_id} id li şema bulunamadı`})
+    }else{
+      req.scheme=existRecort;
+    }
+    next();
+  } catch (error) {
+    next(error);
+  }
 }
 
 /*
